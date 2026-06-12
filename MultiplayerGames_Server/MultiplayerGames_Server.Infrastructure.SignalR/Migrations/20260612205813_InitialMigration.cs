@@ -26,7 +26,7 @@ namespace MultiplayerGames_Server.Infrastructure.SignalR.Migrations
             );
 
             migrationBuilder.CreateTable(
-                name: "HubGroupUser",
+                name: "HubGroupUsers",
                 columns: table => new
                 {
                     Id = table
@@ -37,9 +37,9 @@ namespace MultiplayerGames_Server.Infrastructure.SignalR.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HubGroupUser", x => x.Id);
+                    table.PrimaryKey("PK_HubGroupUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_HubGroupUser_HubGroups_GroupId",
+                        name: "FK_HubGroupUsers_HubGroups_GroupId",
                         column: x => x.GroupId,
                         principalTable: "HubGroups",
                         principalColumn: "Id",
@@ -55,8 +55,8 @@ namespace MultiplayerGames_Server.Infrastructure.SignalR.Migrations
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_HubGroupUser_GroupId",
-                table: "HubGroupUser",
+                name: "IX_HubGroupUsers_GroupId",
+                table: "HubGroupUsers",
                 column: "GroupId"
             );
         }
@@ -64,7 +64,7 @@ namespace MultiplayerGames_Server.Infrastructure.SignalR.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(name: "HubGroupUser");
+            migrationBuilder.DropTable(name: "HubGroupUsers");
 
             migrationBuilder.DropTable(name: "HubGroups");
         }

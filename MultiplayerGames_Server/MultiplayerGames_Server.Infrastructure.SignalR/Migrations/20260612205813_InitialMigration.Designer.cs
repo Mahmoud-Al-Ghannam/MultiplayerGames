@@ -10,8 +10,8 @@ using MultiplayerGames_Server.Infrastructure.SignalR.Persistence.Data;
 namespace MultiplayerGames_Server.Infrastructure.SignalR.Migrations
 {
     [DbContext(typeof(SignalRDbContext))]
-    [Migration("20260609202220_SomeChanges")]
-    partial class SomeChanges
+    [Migration("20260612205813_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,7 +19,7 @@ namespace MultiplayerGames_Server.Infrastructure.SignalR.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.9");
 
-            modelBuilder.Entity("OnlineXO_Server.Infrastructure.SignalR.DataModels.HubGroup", b =>
+            modelBuilder.Entity("MultiplayerGames_Server.Infrastructure.SignalR.DataModels.HubGroup", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -36,7 +36,7 @@ namespace MultiplayerGames_Server.Infrastructure.SignalR.Migrations
                     b.ToTable("HubGroups");
                 });
 
-            modelBuilder.Entity("OnlineXO_Server.Infrastructure.SignalR.DataModels.HubGroupUser", b =>
+            modelBuilder.Entity("MultiplayerGames_Server.Infrastructure.SignalR.DataModels.HubGroupUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,9 +56,9 @@ namespace MultiplayerGames_Server.Infrastructure.SignalR.Migrations
                     b.ToTable("HubGroupUsers");
                 });
 
-            modelBuilder.Entity("OnlineXO_Server.Infrastructure.SignalR.DataModels.HubGroupUser", b =>
+            modelBuilder.Entity("MultiplayerGames_Server.Infrastructure.SignalR.DataModels.HubGroupUser", b =>
                 {
-                    b.HasOne("OnlineXO_Server.Infrastructure.SignalR.DataModels.HubGroup", null)
+                    b.HasOne("MultiplayerGames_Server.Infrastructure.SignalR.DataModels.HubGroup", null)
                         .WithMany()
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -12,17 +12,34 @@ namespace MultiplayerGames_Server.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Tests",
+                columns: table => new
+                {
+                    Id = table
+                        .Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Counter = table.Column<int>(type: "INTEGER", nullable: false),
+                    RowVersion = table.Column<byte[]>(type: "BLOB", nullable: true),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tests", x => x.Id);
+                }
+            );
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
                     Username = table.Column<string>(type: "TEXT", nullable: false),
-                    Password = table.Column<string>(type: "TEXT", nullable: false)
+                    Password = table.Column<string>(type: "TEXT", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "XOGames",
@@ -35,9 +52,9 @@ namespace MultiplayerGames_Server.Infrastructure.Migrations
                     Board = table.Column<string>(type: "TEXT", nullable: false),
                     CurrentTurn = table.Column<byte>(type: "INTEGER", nullable: false),
                     Winner = table.Column<byte>(type: "INTEGER", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    StartedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    EndedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    CreatedAtUtc = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    StartedAtUtc = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    EndedAtUtc = table.Column<DateTime>(type: "TEXT", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -46,33 +63,38 @@ namespace MultiplayerGames_Server.Infrastructure.Migrations
                         name: "FK_XOGames_Users_PlayerOId",
                         column: x => x.PlayerOId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id"
+                    );
                     table.ForeignKey(
                         name: "FK_XOGames_Users_PlayerXId",
                         column: x => x.PlayerXId,
                         principalTable: "Users",
-                        principalColumn: "Id");
-                });
+                        principalColumn: "Id"
+                    );
+                }
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_XOGames_PlayerOId",
                 table: "XOGames",
-                column: "PlayerOId");
+                column: "PlayerOId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_XOGames_PlayerXId",
                 table: "XOGames",
-                column: "PlayerXId");
+                column: "PlayerXId"
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "XOGames");
+            migrationBuilder.DropTable(name: "Tests");
 
-            migrationBuilder.DropTable(
-                name: "Users");
+            migrationBuilder.DropTable(name: "XOGames");
+
+            migrationBuilder.DropTable(name: "Users");
         }
     }
 }

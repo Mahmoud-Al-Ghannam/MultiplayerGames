@@ -17,7 +17,7 @@ namespace MultiplayerGames_Server.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.8");
 
-            modelBuilder.Entity("OnlineXO_Server.Domain.Aggregates.Test.Test", b =>
+            modelBuilder.Entity("MultiplayerGames_Server.Domain.Aggregates.Test.Test", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -28,7 +28,6 @@ namespace MultiplayerGames_Server.Infrastructure.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("BLOB");
 
                     b.HasKey("Id");
@@ -36,7 +35,7 @@ namespace MultiplayerGames_Server.Infrastructure.Migrations
                     b.ToTable("Tests");
                 });
 
-            modelBuilder.Entity("OnlineXO_Server.Domain.Aggregates.User.User", b =>
+            modelBuilder.Entity("MultiplayerGames_Server.Domain.Aggregates.User.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
@@ -54,7 +53,7 @@ namespace MultiplayerGames_Server.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("OnlineXO_Server.Domain.Aggregates.XOGame.XOGame", b =>
+            modelBuilder.Entity("MultiplayerGames_Server.Domain.Aggregates.XOGame.XOGame", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
@@ -96,13 +95,13 @@ namespace MultiplayerGames_Server.Infrastructure.Migrations
                     b.ToTable("XOGames");
                 });
 
-            modelBuilder.Entity("OnlineXO_Server.Domain.Aggregates.XOGame.XOGame", b =>
+            modelBuilder.Entity("MultiplayerGames_Server.Domain.Aggregates.XOGame.XOGame", b =>
                 {
-                    b.HasOne("OnlineXO_Server.Domain.Aggregates.User.User", null)
+                    b.HasOne("MultiplayerGames_Server.Domain.Aggregates.User.User", null)
                         .WithMany()
                         .HasForeignKey("PlayerOId");
 
-                    b.HasOne("OnlineXO_Server.Domain.Aggregates.User.User", null)
+                    b.HasOne("MultiplayerGames_Server.Domain.Aggregates.User.User", null)
                         .WithMany()
                         .HasForeignKey("PlayerXId");
                 });

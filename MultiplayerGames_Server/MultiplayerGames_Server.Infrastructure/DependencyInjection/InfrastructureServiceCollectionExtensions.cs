@@ -9,6 +9,7 @@ using MultiplayerGames_Server.Application.Abstractions.Data.ReadRepository;
 using MultiplayerGames_Server.Application.Abstractions.Services;
 using MultiplayerGames_Server.Application.Broadcasters.XOGame;
 using MultiplayerGames_Server.Domain.Abstractions;
+using MultiplayerGames_Server.Infrastructure.Common.Constants;
 using MultiplayerGames_Server.Infrastructure.Options;
 using MultiplayerGames_Server.Infrastructure.Persistence.Data;
 using MultiplayerGames_Server.Infrastructure.Persistence.ReadRepositories;
@@ -30,7 +31,9 @@ public static class InfrastructureServiceCollectionExtensions
         // Configure SQLite file‑based database
         var connectionString =
             configuration.GetConnectionString("DefaultConnection")
-            ?? "Data Source=multiplayer-games.db"; // fallback
+            ?? throw new ArgumentNullException(
+                "Connection String is not found in json configuration file"
+            );
 
         services.AddDbContext<ApplicationDbContext>(options =>
         {

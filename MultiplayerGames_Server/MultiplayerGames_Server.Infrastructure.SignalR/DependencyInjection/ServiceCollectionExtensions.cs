@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MultiplayerGames_Server.Application.Broadcasters.XOGame;
+using MultiplayerGames_Server.Infrastructure.SignalR.Common.Constants;
 using MultiplayerGames_Server.Infrastructure.SignalR.Persistence.Data;
 using MultiplayerGames_Server.Infrastructure.SignalR.Services;
 using MultiplayerGames_Server.Infrastructure.SignalR.Services.Broadcasters;
@@ -20,7 +21,9 @@ public static class ServiceCollectionExtensions
         // Configure SQLite file‑based database
         var connectionString =
             configuration.GetConnectionString("DefaultConnection")
-            ?? "Data Source=multiplayer-games.db"; // fallback
+            ?? throw new ArgumentNullException(
+                "Connection String is not found in json configuration file"
+            );
 
         services.AddDbContext<SignalRDbContext>(options =>
             options.UseSqlite(connectionString).EnableDetailedErrors(true)

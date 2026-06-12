@@ -11,7 +11,7 @@ using MultiplayerGames_Server.Infrastructure.Persistence.Data;
 namespace MultiplayerGames_Server.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260605184524_InitialMigration")]
+    [Migration("20260612205712_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -20,7 +20,25 @@ namespace MultiplayerGames_Server.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.8");
 
-            modelBuilder.Entity("OnlineXO_Server.Domain.Aggregates.User.User", b =>
+            modelBuilder.Entity("MultiplayerGames_Server.Domain.Aggregates.Test.Test", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Counter")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .HasColumnType("BLOB");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tests");
+                });
+
+            modelBuilder.Entity("MultiplayerGames_Server.Domain.Aggregates.User.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
@@ -38,7 +56,7 @@ namespace MultiplayerGames_Server.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("OnlineXO_Server.Domain.Aggregates.XOGame.XOGame", b =>
+            modelBuilder.Entity("MultiplayerGames_Server.Domain.Aggregates.XOGame.XOGame", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
@@ -47,13 +65,13 @@ namespace MultiplayerGames_Server.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("TEXT");
 
                     b.Property<byte>("CurrentTurn")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("EndedAt")
+                    b.Property<DateTime?>("EndedAtUtc")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PlayerOId")
@@ -62,7 +80,7 @@ namespace MultiplayerGames_Server.Infrastructure.Migrations
                     b.Property<string>("PlayerXId")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("StartedAt")
+                    b.Property<DateTime?>("StartedAtUtc")
                         .HasColumnType("TEXT");
 
                     b.Property<byte>("Status")
@@ -80,13 +98,13 @@ namespace MultiplayerGames_Server.Infrastructure.Migrations
                     b.ToTable("XOGames");
                 });
 
-            modelBuilder.Entity("OnlineXO_Server.Domain.Aggregates.XOGame.XOGame", b =>
+            modelBuilder.Entity("MultiplayerGames_Server.Domain.Aggregates.XOGame.XOGame", b =>
                 {
-                    b.HasOne("OnlineXO_Server.Domain.Aggregates.User.User", null)
+                    b.HasOne("MultiplayerGames_Server.Domain.Aggregates.User.User", null)
                         .WithMany()
                         .HasForeignKey("PlayerOId");
 
-                    b.HasOne("OnlineXO_Server.Domain.Aggregates.User.User", null)
+                    b.HasOne("MultiplayerGames_Server.Domain.Aggregates.User.User", null)
                         .WithMany()
                         .HasForeignKey("PlayerXId");
                 });
