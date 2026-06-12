@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="OnlineXOServer.WebApi/OnlineXOServer.WebApi.csproj" />
+  <Project Path="OnlineXO_Server.Application/OnlineXO_Server.Application.csproj" />
+  <Project Path="OnlineXO_Server.Domain/OnlineXO_Server.Domain.csproj" />
+  <Project Path="OnlineXO_Server.Infrastructure.SignalR/OnlineXO_Server.Infrastructure.SignalR.csproj" />
+  <Project Path="OnlineXO_Server.Infrastructure/OnlineXO_Server.Infrastructure.csproj" />
+</Solution>

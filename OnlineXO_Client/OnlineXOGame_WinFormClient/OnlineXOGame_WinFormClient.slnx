@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="OnlineXOGame_Client.ClientAPI/OnlineXOGame_Client.ClientAPI.csproj" Id="81ff1b0e-adb0-4ee4-9637-1bd453d1b3c0" />
+  <Project Path="OnlineXOGame_Client.WinForms/OnlineXOGame_Client.WinForms.csproj" />
+</Solution>

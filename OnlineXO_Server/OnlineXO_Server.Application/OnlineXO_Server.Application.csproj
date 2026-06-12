@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="14.1.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OnlineXO_Server.Domain\OnlineXO_Server.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Abstractions\" />
+    <Folder Include="Abstractions\Data\" />
+    <Folder Include="Abstractions\Data\ReadRepository\" />
+    <Folder Include="Abstractions\Data\Repositories\" />
+    <Folder Include="Abstractions\Services\" />
+    <Folder Include="Common\" />
+    <Folder Include="Common\Behaviors\" />
+    <Folder Include="Common\Exceptions\" />
+    <Folder Include="Common\Responses\" />
+    <Folder Include="DependencyInjection\" />
+    <Folder Include="EventHandlers\" />
+    <Folder Include="EventHandlers\XOGame\" />
+    <Folder Include="UseCases\User\" />
+    <Folder Include="UseCases\User\RequestDTOs\" />
+    <Folder Include="UseCases\User\ResponseDTOs\" />
+    <Folder Include="UseCases\XOGame\" />
+    <Folder Include="UseCases\XOGame\RequestDTOs\" />
+    <Folder Include="UseCases\XOGame\ResponseDTOs\" />
+  </ItemGroup>
+
+</Project>
