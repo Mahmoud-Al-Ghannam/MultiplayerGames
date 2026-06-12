@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="MultiplayerGames_Server.Application/MultiplayerGames_Server.Application.csproj" />
+  <Project Path="MultiplayerGames_Server.Domain/MultiplayerGames_Server.Domain.csproj" />
+  <Project Path="MultiplayerGames_Server.Infrastructure.SignalR/MultiplayerGames_Server.Infrastructure.SignalR.csproj" />
+  <Project Path="MultiplayerGames_Server.Infrastructure/MultiplayerGames_Server.Infrastructure.csproj" />
+  <Project Path="MultiplayerGames_Server.WebApi/MultiplayerGames_Server.WebApi.csproj" />
+</Solution>
