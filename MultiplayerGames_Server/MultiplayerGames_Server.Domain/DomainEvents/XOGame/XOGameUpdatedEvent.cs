@@ -2,11 +2,11 @@ using System;
 
 namespace MultiplayerGames_Server.Domain.DomainEvents.XOGame;
 
-public class GameUpdatedEvent : DomainEvent
+public class XOGameUpdatedEvent : DomainEvent
 {
     public string GameId { get; } = string.Empty;
 
-    public GameUpdatedEvent(string gameId)
+    public XOGameUpdatedEvent(string gameId)
     {
         GameId = gameId;
     }

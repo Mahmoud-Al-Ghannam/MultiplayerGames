@@ -16,8 +16,8 @@ public class XOGameConfiguration : IEntityTypeConfiguration<XOGame>
             .Property(g => g.Board)
             .HasConversion(b => b.ToJsonString(), s => Board.FromJsonString(s));
 
-        builder.HasOne<User>().WithMany().HasForeignKey(g => g.PlayerXId);
+        builder.HasOne<User>().WithMany().HasForeignKey(g => g.Player1Id);
 
-        builder.HasOne<User>().WithMany().HasForeignKey(g => g.PlayerOId);
+        builder.HasOne<User>().WithMany().HasForeignKey(g => g.Player2Id);
     }
 }

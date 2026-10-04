@@ -7,7 +7,7 @@ using MultiplayerGames_Server.Domain.DomainEvents.XOGame;
 
 namespace MultiplayerGames_Server.Application.EventHandlers.XOGame;
 
-public class GameStartedEventHandler : INotificationHandler<GameStartedEvent>
+public class GameStartedEventHandler : INotificationHandler<XOGameStartedEvent>
 {
     private readonly IXOGameBroadcaster _xOGameBroadcaster;
     private readonly IUnitOfWork _unitOfWork;
@@ -18,23 +18,23 @@ public class GameStartedEventHandler : INotificationHandler<GameStartedEvent>
         _unitOfWork = unitOfWork;
     }
 
-    public async Task Handle(GameStartedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(XOGameStartedEvent notification, CancellationToken cancellationToken)
     {
         var game = await _unitOfWork.XOGames.GetByIdAsync(notification.GameId, cancellationToken);
         if (game == null)
             return;
 
-        User? playerX =
-            game.PlayerXId == null
+        User? player1 =
+            game.Player1Id == null
                 ? null
-                : await _unitOfWork.Users.GetByIdAsync(game.PlayerXId, cancellationToken);
+                : await _unitOfWork.Users.GetByIdAsync(game.Player1Id, cancellationToken);
 
-        User? playerO =
-            game.PlayerOId == null
+        User? player2 =
+            game.Player2Id == null
                 ? null
-                : await _unitOfWork.Users.GetByIdAsync(game.PlayerOId, cancellationToken);
+                : await _unitOfWork.Users.GetByIdAsync(game.Player2Id, cancellationToken);
 
-        var gameDto = new GameDto(game, playerX?.Username, playerO?.Username);
+        var gameDto = new GameDto(game, player1?.Username, player2?.Username);
 
         await _xOGameBroadcaster.GameUpdatedAsync(gameDto, cancellationToken);
     }

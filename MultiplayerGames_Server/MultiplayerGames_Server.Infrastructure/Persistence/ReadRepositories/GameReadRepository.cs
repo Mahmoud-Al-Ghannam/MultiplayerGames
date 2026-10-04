@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MultiplayerGames_Server.Application.Abstractions.Data.ReadRepository;
 using MultiplayerGames_Server.Application.UseCases.XOGame.RequestDTOs;
 using MultiplayerGames_Server.Application.UseCases.XOGame.ResponseDTOs;
+using MultiplayerGames_Server.Domain.Aggregates.TwoPlayersGame;
 using MultiplayerGames_Server.Domain.Aggregates.XOGame;
 using MultiplayerGames_Server.Infrastructure.Persistence.Data;
 
@@ -27,14 +28,14 @@ internal class GameReadRepository : IGameReadRepository
         if (query.Status != null)
             q = q.Where(g => g.Status == query.Status);
 
-        if (query.Winner != null)
+        if (query.WinnerName != null)
         {
             q = q.Where(g =>
                 _dbContext.Users.Any(u =>
-                    u.Username.Contains(query.Winner)
+                    u.Username.Contains(query.WinnerName)
                     && (
-                        (g.PlayerXId == u.Id && g.Winner == Mark.X)
-                        || (g.PlayerOId == u.Id && g.Winner == Mark.O)
+                        (g.Player1Id == u.Id && g.Winner == PlayerNumber.P1)
+                        || (g.Player2Id == u.Id && g.Winner == PlayerNumber.P2)
                     )
                 )
             );
@@ -43,14 +44,14 @@ internal class GameReadRepository : IGameReadRepository
         return await q.Select(g => new GameItemDto
             {
                 Id = g.Id,
-                PlayerOId = g.PlayerOId,
-                PlayerXId = g.PlayerXId,
-                PlayerO = _dbContext
-                    .Users.Where(u => u.Id == g.PlayerOId)
+                Player2Id = g.Player2Id,
+                Player1Id = g.Player1Id,
+                Player2 = _dbContext
+                    .Users.Where(u => u.Id == g.Player2Id)
                     .Select(u => u.Username)
                     .FirstOrDefault(),
-                PlayerX = _dbContext
-                    .Users.Where(u => u.Id == g.PlayerXId)
+                Player1 = _dbContext
+                    .Users.Where(u => u.Id == g.Player1Id)
                     .Select(u => u.Username)
                     .FirstOrDefault(),
                 CurrentTurn = g.CurrentTurn.ToString(),

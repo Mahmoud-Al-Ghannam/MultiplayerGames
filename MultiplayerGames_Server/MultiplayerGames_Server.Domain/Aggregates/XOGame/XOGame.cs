@@ -1,149 +1,90 @@
 using System;
 using MultiplayerGames_Server.Domain.Abstractions;
+using MultiplayerGames_Server.Domain.Aggregates.TwoPlayersGame;
 using MultiplayerGames_Server.Domain.Common;
 using MultiplayerGames_Server.Domain.Common.Codes;
 using MultiplayerGames_Server.Domain.Common.Exceptions;
 using MultiplayerGames_Server.Domain.DomainEvents.XOGame;
+using TwoPlayersGameAgg = MultiplayerGames_Server.Domain.Aggregates.TwoPlayersGame.TwoPlayersGame;
 
 namespace MultiplayerGames_Server.Domain.Aggregates.XOGame;
 
-public class XOGame : AggregateRoot
+public class XOGame : TwoPlayersGameAgg
 {
-    public string? PlayerXId { get; private set; }
-    public string? PlayerOId { get; private set; }
-
-    public GameStatus Status { get; private set; } = GameStatus.WaitingForPlayers;
     public Board Board { get; private set; } = Board.Empty;
-    public Mark CurrentTurn { get; private set; } = new Random().Next(0, 1) == 0 ? Mark.X : Mark.O;
-    public Mark? Winner { get; private set; }
-    public DateTime CreatedAtUtc { get; private set; } = DateTime.UtcNow;
-    public DateTime? StartedAtUtc { get; private set; }
-    public DateTime? EndedAtUtc { get; private set; }
+    public Mark FirstPlayerMark { get; private set; } =
+        new Random().Next(0, 1) == 0 ? Mark.O : Mark.X;
+    public Mark SecondPlayerMark => FirstPlayerMark == Mark.O ? Mark.X : Mark.O;
+    public PlayerNumber CurrentTurn { get; private set; } =
+        new Random().Next(0, 1) == 0 ? PlayerNumber.P1 : PlayerNumber.P2;
+
+    public DateTime? TurnStartedAtUtc { get; private set; }
 
     private XOGame() { }
 
     public static XOGame Create(string firstPlayerId, IIdGenerator idGenerator)
     {
         var game = new XOGame() { Id = idGenerator.NewId() };
-
-        game.SetPlayerX(firstPlayerId);
-        game.AddDomainEvent(new GameCreatedEvent(game.Id, game.PlayerXId, game.PlayerOId));
+        game.SetPlayer1(firstPlayerId);
+        game.AddDomainEvent(new XOGameCreatedEvent(game.Id, game.Player1Id, game.Player2Id));
 
         return game;
     }
 
-    private XOGame SetPlayerX(string? playerXId)
-    {
-        playerXId = playerXId?.Trim() ?? string.Empty;
-        if (string.IsNullOrEmpty(playerXId))
-            playerXId = null;
-
-        PlayerXId = playerXId;
-        return this;
-    }
-
-    private XOGame SetPlayerO(string? playerOId)
-    {
-        playerOId = playerOId?.Trim() ?? string.Empty;
-        if (string.IsNullOrEmpty(playerOId))
-            playerOId = null;
-
-        PlayerOId = playerOId;
-        return this;
-    }
-
     public XOGame SwitchTurn()
     {
-        CurrentTurn = CurrentTurn == Mark.X ? Mark.O : Mark.X;
+        CurrentTurn = CurrentTurn == PlayerNumber.P1 ? PlayerNumber.P2 : PlayerNumber.P1;
+        TurnStartedAtUtc = DateTime.UtcNow;
         return this;
     }
 
-    private void Start()
+    protected override void Start()
     {
-        if (Status != GameStatus.WaitingForPlayers)
-            return;
-
-        Status = GameStatus.InProgress;
-        StartedAtUtc = DateTime.UtcNow;
-        AddDomainEvent(new GameStartedEvent(Id));
+        base.Start();
+        TurnStartedAtUtc = DateTime.UtcNow;
+        AddDomainEvent(new XOGameStartedEvent(Id));
     }
 
-    public XOGame Join(string playerId)
+    public override void Join(string playerId)
     {
-        if (Status == GameStatus.Finished)
-            throw new DomainException(XOGameCodes.Error.Finished);
-
-        playerId = playerId?.Trim() ?? string.Empty;
-
-        if (string.Equals(playerId, PlayerOId) || string.Equals(playerId, PlayerXId))
-            return this;
-
-        if (string.IsNullOrEmpty(PlayerXId))
-            PlayerXId = playerId;
-        else if (string.IsNullOrEmpty(PlayerOId))
-            PlayerOId = playerId;
-
-        if (!string.IsNullOrEmpty(PlayerOId) && !string.IsNullOrEmpty(PlayerXId))
-            Start();
-        AddDomainEvent(new GameUpdatedEvent(Id));
-        return this;
+        base.Join(playerId);
+        AddDomainEvent(new XOGameUpdatedEvent(Id));
     }
 
-    public XOGame Leave(string playerId)
+    public override void Leave(string playerId)
     {
-        playerId = playerId?.Trim() ?? string.Empty;
-        if (!string.Equals(playerId, PlayerOId) && !string.Equals(playerId, PlayerXId))
-            throw new DomainException(XOGameCodes.Error.NotPlayer);
-
-        if (Status == GameStatus.Finished)
-            return this;
-
-        if (Status == GameStatus.InProgress)
-        {
-            if (string.Equals(playerId, PlayerXId))
-                Winner = Mark.O;
-            if (string.Equals(playerId, PlayerOId))
-                Winner = Mark.X;
-            Status = GameStatus.Finished;
-        }
-        else
-        {
-            if (string.Equals(playerId, PlayerXId))
-                PlayerXId = null;
-            if (string.Equals(playerId, PlayerOId))
-                PlayerOId = null;
-        }
-
-        AddDomainEvent(new GameUpdatedEvent(Id));
-        return this;
+        base.Leave(playerId);
+        AddDomainEvent(new XOGameUpdatedEvent(Id));
     }
 
     public void EnsureCanMove(string playerId, int row, int col)
     {
         playerId = playerId?.Trim() ?? string.Empty;
         if (
-            string.Equals(PlayerXId, playerId) == false
-            && string.Equals(PlayerOId, playerId) == false
+            string.Equals(Player1Id, playerId) == false
+            && string.Equals(Player1Id, playerId) == false
         )
             throw new DomainException(XOGameCodes.Error.NotPlayer);
 
         if (Status != GameStatus.InProgress)
             throw new DomainException(XOGameCodes.Error.NotInProgress);
 
-        Mark expectedMark = GetMarkForPlayer(playerId);
-        if (CurrentTurn != expectedMark)
+        PlayerNumber playerNumber = GetPlayerNumber(playerId);
+        if (CurrentTurn != playerNumber)
             throw new DomainException(XOGameCodes.Error.NotPlayerTurn);
 
         if (!Board.IsEmptyAt(row, col))
-            throw new InvalidOperationException(XOGameCodes.Error.Board.CellAlreadyOccupied);
+            throw new DomainException(XOGameCodes.Error.Board.CellAlreadyOccupied);
     }
 
     public void MakeMove(string playerId, int row, int col)
     {
         playerId = playerId?.Trim() ?? string.Empty;
         EnsureCanMove(playerId, row, col);
+
         // Apply move
-        Board = Board.SetMark(row, col, CurrentTurn);
+        Mark currentMark = GetMarkForPlayer(playerId);
+        Board = Board.SetMark(row, col, currentMark);
 
         // Check win / draw
         if (HasWinner(out var winner))
@@ -152,7 +93,11 @@ public class XOGame : AggregateRoot
             Winner = winner;
             EndedAtUtc = DateTime.UtcNow;
             AddDomainEvent(
-                new GameEndedEvent(Id, Winner!.Value, winner == Mark.X ? PlayerXId : PlayerOId)
+                new XOGameEndedEvent(
+                    Id,
+                    Winner!.Value,
+                    winner == PlayerNumber.P1 ? Player1Id : Player2Id
+                )
             );
         }
         else if (Board.IsFull)
@@ -160,17 +105,17 @@ public class XOGame : AggregateRoot
             Status = GameStatus.Finished;
             Winner = null; // draw
             EndedAtUtc = DateTime.UtcNow;
-            AddDomainEvent(new GameEndedEvent(Id, null, null));
+            AddDomainEvent(new XOGameEndedEvent(Id, null, null));
         }
         else
         {
             // Switch turn
             SwitchTurn();
-            AddDomainEvent(new MoveMadeEvent(Id, playerId, row, col, CurrentTurn));
+            AddDomainEvent(new XOGameMoveMadeEvent(Id, playerId, row, col, currentMark));
         }
     }
 
-    public bool HasWinner(out Mark? winner)
+    public bool HasWinner(out PlayerNumber? winner)
     {
         winner = null;
 
@@ -181,7 +126,7 @@ public class XOGame : AggregateRoot
             || Board.AllCellsOfSecondaryDiagonalMatchToMark(Mark.X)
         )
         {
-            winner = Mark.X;
+            winner = FirstPlayerMark == Mark.X ? PlayerNumber.P1 : PlayerNumber.P2;
             return true;
         }
 
@@ -192,7 +137,7 @@ public class XOGame : AggregateRoot
             || Board.AllCellsOfSecondaryDiagonalMatchToMark(Mark.O)
         )
         {
-            winner = Mark.O;
+            winner = FirstPlayerMark == Mark.O ? PlayerNumber.P1 : PlayerNumber.P2;
             return true;
         }
 
@@ -201,10 +146,19 @@ public class XOGame : AggregateRoot
 
     private Mark GetMarkForPlayer(string playerId)
     {
-        if (playerId == PlayerXId)
-            return Mark.X;
-        if (playerId == PlayerOId)
-            return Mark.O;
+        if (playerId == Player1Id)
+            return FirstPlayerMark;
+        if (playerId == Player2Id)
+            return SecondPlayerMark;
+        throw new DomainException(XOGameCodes.Error.NotPlayer);
+    }
+
+    private PlayerNumber GetPlayerNumber(string playerId)
+    {
+        if (playerId == Player1Id)
+            return PlayerNumber.P1;
+        if (playerId == Player2Id)
+            return PlayerNumber.P2;
         throw new DomainException(XOGameCodes.Error.NotPlayer);
     }
 }

@@ -21,12 +21,19 @@ builder.Services.AddApplicationServices();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// if (app.Environment.IsDevelopment())
+// {
+app.MapOpenApi();
+app.MapScalarApiReference(options =>
 {
-    app.MapOpenApi();
-    app.MapScalarApiReference();
-    app.UseSignalRDocumentation();
-}
+    options
+        .WithTitle("Multiplayers Games Server APIs")
+        .WithTheme(ScalarTheme.BluePlanet)
+        .WithOperationTitleSource(OperationTitleSource.Path);
+});
+app.UseSignalRDocumentation();
+
+// }
 
 app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();

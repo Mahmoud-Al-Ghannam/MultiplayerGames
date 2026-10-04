@@ -5,8 +5,8 @@ namespace MultiplayerGames_Server.Application.Broadcasters.XOGame;
 public record class GameDto
 {
     public string Id { get; init; } = string.Empty;
-    public string? PlayerX { get; init; }
-    public string? PlayerO { get; init; }
+    public string? Player1 { get; init; }
+    public string? Player2 { get; init; }
     public string Status { get; init; } = string.Empty;
     public string CurrentTurn { get; init; } = string.Empty;
     public string? Winner { get; init; }
@@ -17,11 +17,11 @@ public record class GameDto
 
     public GameDto() { }
 
-    public GameDto(XOGameAggregate game, string? playerX, string? playerO)
+    public GameDto(XOGameAggregate game, string? player1, string? player2)
     {
         Id = game.Id;
-        PlayerO = playerO;
-        PlayerX = playerX;
+        Player2 = player2;
+        Player1 = player1;
         CurrentTurn = game.CurrentTurn.ToString();
         Status = game.Status.ToString();
         Winner = game.Winner.ToString();

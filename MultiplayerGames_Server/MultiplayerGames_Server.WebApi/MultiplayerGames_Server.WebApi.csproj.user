@@ -2,5 +2,6 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ActiveDebugProfile>https</ActiveDebugProfile>
+    <NameOfLastUsedPublishProfile>D:\My Files\programming\C#\Projects\Multiplayer Games\MultiplayerGames\MultiplayerGames_Server\MultiplayerGames_Server.WebApi\Properties\PublishProfiles\site95918-WebDeploy.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>

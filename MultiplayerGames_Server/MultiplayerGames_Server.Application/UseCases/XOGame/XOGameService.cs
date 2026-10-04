@@ -119,23 +119,23 @@ public class XOGameService
         if (game == null)
             throw new NotFoundEntityException(XOGameCodes.Error.NotFound);
 
-        UserAggregate? playerX =
-            game.PlayerXId == null
+        UserAggregate? player1 =
+            game.Player1Id == null
                 ? null
-                : await _unitOfWork.Users.GetByIdAsync(game.PlayerXId, cancellationToken);
+                : await _unitOfWork.Users.GetByIdAsync(game.Player1Id, cancellationToken);
 
-        UserAggregate? playerO =
-            game.PlayerOId == null
+        UserAggregate? player2 =
+            game.Player2Id == null
                 ? null
-                : await _unitOfWork.Users.GetByIdAsync(game.PlayerOId, cancellationToken);
+                : await _unitOfWork.Users.GetByIdAsync(game.Player2Id, cancellationToken);
 
         var gameDto = new GameInfoDto
         {
             Id = game.Id,
-            PlayerOId = game.PlayerOId,
-            PlayerO = playerO?.Username,
-            PlayerXId = game.PlayerXId,
-            PlayerX = playerX?.Username,
+            Player1Id = game.Player1Id,
+            Player1 = player1?.Username,
+            Player2Id = game.Player2Id,
+            Player2 = player2?.Username,
             CurrentTurn = game.CurrentTurn.ToString(),
             Status = game.Status.ToString(),
             Winner = game.Winner?.ToString(),

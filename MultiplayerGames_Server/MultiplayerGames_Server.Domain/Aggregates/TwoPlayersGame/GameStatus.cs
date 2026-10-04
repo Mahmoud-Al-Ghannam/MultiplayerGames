@@ -1,4 +1,4 @@
-namespace MultiplayerGames_Server.Domain.Aggregates.XOGame;
+namespace MultiplayerGames_Server.Domain.Aggregates.TwoPlayersGame;
 
 public enum GameStatus : byte
 {
