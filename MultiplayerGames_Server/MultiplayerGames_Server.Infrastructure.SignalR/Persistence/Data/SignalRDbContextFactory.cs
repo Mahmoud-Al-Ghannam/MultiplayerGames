@@ -10,8 +10,8 @@ public class SignalRDbContextFactory : IDesignTimeDbContextFactory<SignalRDbCont
     public SignalRDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<SignalRDbContext>();
-        optionsBuilder.UseSqlite(
-            $"Data Source=../MultiplayerGames_Server.WebApi/{DbConstants.DefaultDbName}"
+        optionsBuilder.UseSqlServer(
+            "Server=.;Database=MultiplayerGamesSystemDb;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True;"
         );
         return new SignalRDbContext(optionsBuilder.Options);
     }

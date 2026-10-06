@@ -1,4 +1,5 @@
 using System;
+using Hangfire.Community.Outbox.Extensions;
 using Microsoft.EntityFrameworkCore;
 using MultiplayerGames_Server.Domain.Aggregates.Test;
 using MultiplayerGames_Server.Domain.Aggregates.User;
@@ -14,6 +15,8 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        // This maps the OutboxMessage entity to a table (Hangfire.Community.Outbox)
+        modelBuilder.MapOutboxJobs();
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
 

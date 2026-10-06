@@ -1,6 +1,11 @@
 using System;
 using System.Reflection;
 using Dorssel.EntityFrameworkCore;
+using Hangfire;
+using Hangfire.Community.Outbox.Extensions;
+using Hangfire.SqlServer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,25 +26,42 @@ public static class InfrastructureServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
+        IWebHostEnvironment environment,
         IConfiguration configuration
     )
     {
         services.Configure<JwtOptions>(options =>
             configuration.GetSection("JwtOptions").Bind(options)
         );
+        services.Configure<EmailOptions>(options =>
+            configuration.GetSection("EmailSettings").Bind(options)
+        );
 
-        // Configure SQLite file‑based database
         var connectionString =
             configuration.GetConnectionString("DefaultConnection")
-            ?? throw new ArgumentNullException(
-                "Connection String is not found in json configuration file"
+            ?? throw new InvalidOperationException(
+                "Connection string 'DefaultConnection' was not found."
             );
 
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseSqlite(connectionString).EnableDetailedErrors(true);
-            options.UseSqliteTimestamp();
+            options.UseSqlServer(connectionString).EnableDetailedErrors(true);
         });
+
+        services.AddHangfireOutbox<ApplicationDbContext>();
+        // Add Hangfire services.
+        services.AddHangfire(configuration =>
+            configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(
+                    connectionString,
+                    new SqlServerStorageOptions { SchemaName = "Hangfire" }
+                )
+        );
+        // Add the processing server as IHostedService
+        services.AddHangfireServer();
 
         var assembly = Assembly.GetExecutingAssembly();
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));

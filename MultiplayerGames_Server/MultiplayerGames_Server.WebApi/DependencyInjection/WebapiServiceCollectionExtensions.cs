@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using MultiplayerGames_Server.Infrastructure.Options;
+using MultiplayerGames_Server.WebApi.Hangfire;
 
 namespace MultiplayerGames_Server.WebApi.DependencyInjection;
 
@@ -14,6 +15,8 @@ public static class WebapiServiceCollectionExtensions
         IConfiguration configuration
     )
     {
+        services.AddScoped<MyHangfireAuthorizationFilter>();
+
         // Add services to the container.
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         services.AddControllers();

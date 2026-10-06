@@ -1,4 +1,5 @@
 using System;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,18 +16,18 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructureSignalR(
         this IServiceCollection services,
+        IWebHostEnvironment environment,
         IConfiguration configuration
     )
     {
-        // Configure SQLite file‑based database
         var connectionString =
             configuration.GetConnectionString("DefaultConnection")
-            ?? throw new ArgumentNullException(
-                "Connection String is not found in json configuration file"
+            ?? throw new InvalidOperationException(
+                "Connection string 'DefaultConnection' was not found."
             );
 
         services.AddDbContext<SignalRDbContext>(options =>
-            options.UseSqlite(connectionString).EnableDetailedErrors(true)
+            options.UseSqlServer(connectionString).EnableDetailedErrors(true)
         );
 
         services.AddSignalRDocumentation(options =>

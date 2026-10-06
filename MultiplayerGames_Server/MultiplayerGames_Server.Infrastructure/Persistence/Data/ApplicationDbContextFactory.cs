@@ -10,8 +10,8 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
     public ApplicationDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        optionsBuilder.UseSqlite(
-            $"Data Source=../MultiplayerGames_Server.WebApi/{DbConstants.DefaultDbName}"
+        optionsBuilder.UseSqlServer(
+            "Server=.;Database=MultiplayerGamesSystemDb;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True;"
         );
         return new ApplicationDbContext(optionsBuilder.Options);
     }

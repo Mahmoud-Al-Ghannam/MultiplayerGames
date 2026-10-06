@@ -7,8 +7,5 @@ namespace MultiplayerGames_Server.Infrastructure.Persistence.Configurations;
 
 public class TestConfiguration : IEntityTypeConfiguration<Test>
 {
-    public void Configure(EntityTypeBuilder<Test> builder)
-    {
-        builder.Property<byte[]>("RowVersion").IsConcurrencyToken();
-    }
+    public void Configure(EntityTypeBuilder<Test> builder) { }
 }
