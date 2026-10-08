@@ -1,6 +1,6 @@
 using System;
 
-namespace MultiplayerGames_Server.Domain.Abstractions;
+namespace MultiplayerGames_Server.Domain.Abstractions.Services;
 
 public interface IIdGenerator
 {

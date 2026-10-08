@@ -22,13 +22,14 @@
     <Folder Include="Abstractions\Data\ReadRepository\" />
     <Folder Include="Abstractions\Data\Repositories\" />
     <Folder Include="Abstractions\Services\" />
-    <Folder Include="Common\" />
     <Folder Include="Common\Behaviors\" />
-    <Folder Include="Common\Exceptions\" />
     <Folder Include="Common\Responses\" />
     <Folder Include="DependencyInjection\" />
     <Folder Include="EventHandlers\" />
     <Folder Include="EventHandlers\XOGame\" />
+    <Folder Include="UseCases\Auth\Commands\ChangePassword\" />
+    <Folder Include="UseCases\Auth\Commands\ForgotPasswordCommand\" />
+    <Folder Include="UseCases\Auth\Commands\ResendConfirmEmailOtp\" />
     <Folder Include="UseCases\Test\" />
     <Folder Include="UseCases\User\" />
     <Folder Include="UseCases\User\RequestDTOs\" />

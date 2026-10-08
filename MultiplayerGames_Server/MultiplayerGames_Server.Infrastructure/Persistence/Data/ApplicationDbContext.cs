@@ -1,6 +1,8 @@
 using System;
 using Hangfire.Community.Outbox.Extensions;
 using Microsoft.EntityFrameworkCore;
+using MultiplayerGames_Server.Domain.Aggregates.Otp;
+using MultiplayerGames_Server.Domain.Aggregates.RefreshToken;
 using MultiplayerGames_Server.Domain.Aggregates.Test;
 using MultiplayerGames_Server.Domain.Aggregates.User;
 using MultiplayerGames_Server.Domain.Aggregates.XOGame;
@@ -23,4 +25,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<User> Users => Set<User>();
     public DbSet<XOGame> XOGames => Set<XOGame>();
     public DbSet<Test> Tests => Set<Test>();
+    public DbSet<Otp> Otps => Set<Otp>();
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 }

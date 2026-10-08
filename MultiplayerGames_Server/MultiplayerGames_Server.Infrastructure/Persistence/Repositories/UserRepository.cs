@@ -19,4 +19,10 @@ internal class UserRepository : BaseRepository<User>, IUserRepository
         username = username?.Trim() ?? string.Empty;
         return await _dbSet.FirstOrDefaultAsync(u => u.Username == username, cancellationToken);
     }
+
+    public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken)
+    {
+        email = email?.Trim() ?? string.Empty;
+        return await _dbSet.FirstOrDefaultAsync(u => u.Email.Value == email, cancellationToken);
+    }
 }

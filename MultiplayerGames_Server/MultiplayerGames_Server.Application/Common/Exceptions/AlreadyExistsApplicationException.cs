@@ -4,12 +4,12 @@ using System.Text;
 
 namespace MultiplayerGames_Server.Application.Common.Exceptions
 {
-    public class NotFoundEntityException : ApplicationException
+    public class AlreadyExistsApplicationException : ApplicationException
     {
-        public NotFoundEntityException(string message)
+        public AlreadyExistsApplicationException(string message)
             : base(message) { }
 
-        public NotFoundEntityException(string message, Exception innerException)
+        public AlreadyExistsApplicationException(string message, Exception innerException)
             : base(message, innerException) { }
     }
 }

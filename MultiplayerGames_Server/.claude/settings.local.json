@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"D:\\\\My Files\\\\programming\\\\C#\\\\Projects\\\\Multiplayer Games\\\\MultiplayerGames\\\\MultiplayerGames_Server\\\\MultiplayerGames_Server.Application\\\\UseCases\\\\Auth\\\\Commands\\\\Login\")",
+      "Bash(mv \"D:\\\\My Files\\\\programming\\\\C#\\\\Projects\\\\Multiplayer Games\\\\MultiplayerGames\\\\MultiplayerGames_Server\\\\MultiplayerGames_Server.Application\\\\UseCases\\\\Auth\\\\Queries\\\\Login\\\\LoginQuery.cs\" \"D:\\\\My Files\\\\programming\\\\C#\\\\Projects\\\\Multiplayer Games\\\\MultiplayerGames\\\\MultiplayerGames_Server\\\\MultiplayerGames_Server.Application\\\\UseCases\\\\Auth\\\\Commands\\\\Login\\\\LoginCommand.cs\")",
+      "Bash(mv \"D:\\\\My Files\\\\programming\\\\C#\\\\Projects\\\\Multiplayer Games\\\\MultiplayerGames\\\\MultiplayerGames\\\\MultiplayerGames_Server\\\\MultiplayerGames_Server.Application\\\\UseCases\\\\Auth\\\\Queries\\\\Login\\\\LoginQueryHandler.cs\" \"D:\\\\My Files\\\\programming\\\\C#\\\\Projects\\\\Multiplayer Games\\\\MultiplayerGames\\\\MultiplayerGames_Server\\\\MultiplayerGames_Server.Application\\\\UseCases\\\\Auth\\\\Commands\\\\Login\\\\LoginCommandHandler.cs\")",
+      "WebSearch"
+    ]
+  }
+}

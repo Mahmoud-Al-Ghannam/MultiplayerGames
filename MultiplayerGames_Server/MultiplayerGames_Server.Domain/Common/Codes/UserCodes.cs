@@ -8,6 +8,12 @@ public static class UserCodes
     {
         public const string NotFound = "User.Error.NotFound";
 
+        public static class Email
+        {
+            public const string Required = "User.Error.Email.Required";
+            public const string Duplicate = "User.Error.Email.Duplicate";
+        }
+
         public static class Password
         {
             public const string Required = "User.Error.Password.Required";

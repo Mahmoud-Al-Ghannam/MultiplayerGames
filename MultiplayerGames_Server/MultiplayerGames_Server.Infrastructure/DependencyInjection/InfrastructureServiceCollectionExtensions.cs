@@ -14,6 +14,7 @@ using MultiplayerGames_Server.Application.Abstractions.Data.ReadRepository;
 using MultiplayerGames_Server.Application.Abstractions.Services;
 using MultiplayerGames_Server.Application.Broadcasters.XOGame;
 using MultiplayerGames_Server.Domain.Abstractions;
+using MultiplayerGames_Server.Domain.Abstractions.Services;
 using MultiplayerGames_Server.Infrastructure.Common.Constants;
 using MultiplayerGames_Server.Infrastructure.Options;
 using MultiplayerGames_Server.Infrastructure.Persistence.Data;
@@ -71,6 +72,15 @@ public static class InfrastructureServiceCollectionExtensions
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IGenerateTokenService, GenerateTokenService>();
         services.AddScoped<IIdGenerator, IdGenerator>();
+
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.AddScoped<IOtpCodeHasher, OtpCodeHasher>();
+        services.AddScoped<IRefreshTokenHasher, RefreshTokenHasher>();
+
+        services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IEmailTemplateService, EmailTemplateService>();
+        services.AddScoped<IFileStorageService, FileStorageService>();
+        services.AddScoped<IOtpService, OtpService>();
 
         return services;
     }

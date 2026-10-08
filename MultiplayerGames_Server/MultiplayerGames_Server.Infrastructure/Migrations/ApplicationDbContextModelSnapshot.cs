@@ -78,6 +78,77 @@ namespace MultiplayerGames_Server.Infrastructure.Migrations
                     b.ToTable("OutboxJobs", "HangFireOutbox");
                 });
 
+            modelBuilder.Entity("MultiplayerGames_Server.Domain.Aggregates.Otp.Otp", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<DateTime>("ExpiredAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("HashedOtpCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<byte>("Purpose")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Otps");
+                });
+
+            modelBuilder.Entity("MultiplayerGames_Server.Domain.Aggregates.RefreshToken.RefreshToken", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<DateTime>("ExpiresAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("HashedToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReplacedByTokenId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RevokedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
+                });
+
             modelBuilder.Entity("MultiplayerGames_Server.Domain.Aggregates.Test.Test", b =>
                 {
                     b.Property<string>("Id")
@@ -96,8 +167,14 @@ namespace MultiplayerGames_Server.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Password")
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("HashedPassword")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfileImagePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
@@ -155,6 +232,48 @@ namespace MultiplayerGames_Server.Infrastructure.Migrations
                     b.HasIndex("Player2Id");
 
                     b.ToTable("XOGames");
+                });
+
+            modelBuilder.Entity("MultiplayerGames_Server.Domain.Aggregates.Otp.Otp", b =>
+                {
+                    b.HasOne("MultiplayerGames_Server.Domain.Aggregates.User.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MultiplayerGames_Server.Domain.Aggregates.RefreshToken.RefreshToken", b =>
+                {
+                    b.HasOne("MultiplayerGames_Server.Domain.Aggregates.User.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MultiplayerGames_Server.Domain.Aggregates.User.User", b =>
+                {
+                    b.OwnsOne("MultiplayerGames_Server.Domain.ValueObjects.Email", "Email", b1 =>
+                        {
+                            b1.Property<string>("UserId")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("Email");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("Users");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.Navigation("Email")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MultiplayerGames_Server.Domain.Aggregates.XOGame.XOGame", b =>

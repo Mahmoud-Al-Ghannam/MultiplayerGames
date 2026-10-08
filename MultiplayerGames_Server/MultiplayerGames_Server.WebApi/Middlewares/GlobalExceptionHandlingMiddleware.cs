@@ -43,10 +43,10 @@ public class GlobalExceptionHandlingMiddleware
     {
         var statusCode = exception switch
         {
-            BadRequestException => HttpStatusCode.BadRequest,
+            BadRequestApplicationException => HttpStatusCode.BadRequest,
             DomainException => HttpStatusCode.BadRequest,
-            NotFoundEntityException => HttpStatusCode.NotFound,
-            AlreadyExistsEntityException => HttpStatusCode.Conflict,
+            NotFoundApplicationException => HttpStatusCode.NotFound,
+            AlreadyExistsApplicationException => HttpStatusCode.Conflict,
             ForbiddenAccessException => HttpStatusCode.Forbidden,
             AppUnauthorizedAccessException => HttpStatusCode.Unauthorized,
             System.UnauthorizedAccessException => HttpStatusCode.Unauthorized,

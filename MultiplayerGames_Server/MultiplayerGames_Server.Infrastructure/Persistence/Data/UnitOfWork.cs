@@ -17,6 +17,8 @@ internal class UnitOfWork : IUnitOfWork
         Users = new UserRepository(dbContext);
         XOGames = new XOGameRepository(dbContext);
         Tests = new TestRepository(dbContext);
+        Otps = new OtpRepository(dbContext);
+        RefreshTokens = new RefreshTokenRepository(dbContext);
     }
 
     public IUserRepository Users { get; }
@@ -24,6 +26,10 @@ internal class UnitOfWork : IUnitOfWork
     public IXOGameRepository XOGames { get; }
 
     public ITestRepository Tests { get; }
+
+    public IOtpRepository Otps { get; }
+
+    public IRefreshTokenRepository RefreshTokens { get; }
 
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
     {

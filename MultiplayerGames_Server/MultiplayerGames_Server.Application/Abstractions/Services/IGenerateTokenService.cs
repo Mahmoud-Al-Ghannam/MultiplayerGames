@@ -6,4 +6,5 @@ namespace MultiplayerGames_Server.Application.Abstractions.Services;
 public interface IGenerateTokenService
 {
     public Task<string> GenerateAccessTokenAsync(User user, CancellationToken cancellationToken);
+    public Task<string> GenerateRefreshTokenAsync(CancellationToken cancellationToken);
 }

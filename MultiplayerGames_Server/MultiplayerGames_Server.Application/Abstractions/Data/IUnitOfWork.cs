@@ -7,6 +7,8 @@ public interface IUnitOfWork
 {
     IUserRepository Users { get; }
     IXOGameRepository XOGames { get; }
+    IOtpRepository Otps { get; }
+    IRefreshTokenRepository RefreshTokens { get; }
     ITestRepository Tests { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     Task<IAppTransaction> BeginTransactionAsync(CancellationToken cancellationToken);

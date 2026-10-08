@@ -9,13 +9,15 @@ public interface IEmailService
         string subject,
         string body,
         bool isHtml,
-        int maxAttempts = 3
+        int maxAttempts = 3,
+        CancellationToken cancellationToken = default
     );
     public Task SendAsync(
         IEnumerable<string> toEmails,
         string subject,
         string body,
         bool isHtml,
-        int maxAttempts = 3
+        int maxAttempts = 3,
+        CancellationToken cancellationToken = default
     );
 }

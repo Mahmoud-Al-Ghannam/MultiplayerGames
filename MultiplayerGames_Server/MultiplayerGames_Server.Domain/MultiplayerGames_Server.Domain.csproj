@@ -8,14 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Abstractions\" />
+    <Folder Include="Abstractions\DomainServices\" />
+    <Folder Include="Aggregates\Otp\" />
+    <Folder Include="Aggregates\RefreshToken\" />
     <Folder Include="Aggregates\Test\" />
     <Folder Include="Aggregates\User\" />
     <Folder Include="Aggregates\XOGame\" />
     <Folder Include="Common\" />
     <Folder Include="Common\Codes\" />
+    <Folder Include="Common\Constants\" />
     <Folder Include="Common\Exceptions\" />
     <Folder Include="DependencyInjection\" />
+    <Folder Include="Services\" />
+    <Folder Include="ValueObjects\" />
   </ItemGroup>
 
   <ItemGroup>

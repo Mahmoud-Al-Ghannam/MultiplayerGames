@@ -22,7 +22,8 @@ internal class EmailService : IEmailService
         string subject,
         string body,
         bool isHtml,
-        int maxAttempts = 3
+        int maxAttempts = 3,
+        CancellationToken cancellationToken = default
     )
     {
         int attempts = 1;
@@ -31,7 +32,13 @@ internal class EmailService : IEmailService
             bool success = true;
             try
             {
-                await _SendWithoutTryingOnFailureAsync(toEmail, subject, body, isHtml);
+                await _SendWithoutTryingOnFailureAsync(
+                    toEmail,
+                    subject,
+                    body,
+                    isHtml,
+                    cancellationToken
+                );
             }
             catch
             {
@@ -50,7 +57,8 @@ internal class EmailService : IEmailService
         string subject,
         string body,
         bool isHtml,
-        int maxAttempts = 3
+        int maxAttempts = 3,
+        CancellationToken cancellationToken = default
     )
     {
         foreach (var toEmail in toEmails)
@@ -63,7 +71,8 @@ internal class EmailService : IEmailService
         string toEmail,
         string subject,
         string body,
-        bool isHtml
+        bool isHtml,
+        CancellationToken cancellationToken = default
     )
     {
         MimeMessage email = new MimeMessage();

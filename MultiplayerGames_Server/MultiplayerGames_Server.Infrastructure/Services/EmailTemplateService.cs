@@ -1,9 +1,10 @@
 using System;
 using MultiplayerGames_Server.Application.Abstractions.Services;
+using MultiplayerGames_Server.Domain.Abstractions.Services;
 
 namespace MultiplayerGames_Server.Infrastructure.Services;
 
-internal class EmailTemplateService : IEmailTemplateService
+public class EmailTemplateService : IEmailTemplateService
 {
     public string GenerateWelcomeTemplate(string userName)
     {

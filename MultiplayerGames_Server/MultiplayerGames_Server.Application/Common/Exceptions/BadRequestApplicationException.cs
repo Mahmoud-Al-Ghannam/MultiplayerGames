@@ -4,12 +4,12 @@ using System.Text;
 
 namespace MultiplayerGames_Server.Application.Common.Exceptions
 {
-    public class AlreadyExistsEntityException : ApplicationException
+    public class BadRequestApplicationException : ApplicationException
     {
-        public AlreadyExistsEntityException(string message)
+        public BadRequestApplicationException(string message)
             : base(message) { }
 
-        public AlreadyExistsEntityException(string message, Exception innerException)
+        public BadRequestApplicationException(string message, Exception innerException)
             : base(message, innerException) { }
     }
 }

@@ -39,7 +39,7 @@ public class UserService
         var user = await _unitOfWork.Users.GetByIdAsync(userId, cancellationToken);
 
         if (user == null)
-            throw new NotFoundEntityException(UserCodes.Error.NotFound);
+            throw new NotFoundApplicationException(UserCodes.Error.NotFound);
         var userDto = new UserInfoDto { Id = user.Id, Username = user.Username };
 
         return new BaseResponse<UserInfoDto?>
@@ -58,7 +58,7 @@ public class UserService
         var user = await _unitOfWork.Users.GetByUsernameAsync(username, cancellationToken);
 
         if (user == null)
-            throw new NotFoundEntityException(UserCodes.Error.NotFound);
+            throw new NotFoundApplicationException(UserCodes.Error.NotFound);
         var userDto = new UserInfoDto { Id = user.Id, Username = user.Username };
 
         return new BaseResponse<UserInfoDto?>

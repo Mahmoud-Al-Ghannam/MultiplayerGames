@@ -20,7 +20,7 @@ public class ExceptionHandlingBehavior<TRequest, TResponse> : IPipelineBehavior<
         }
         catch (DomainException ex)
         {
-            throw new BadRequestException(ex.Message, ex);
+            throw new BadRequestApplicationException(ex.Message, ex);
         }
         catch (Exception ex)
         {

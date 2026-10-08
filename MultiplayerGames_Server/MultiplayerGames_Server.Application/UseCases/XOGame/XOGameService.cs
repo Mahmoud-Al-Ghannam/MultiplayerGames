@@ -8,6 +8,7 @@ using MultiplayerGames_Server.Application.Common.Responses;
 using MultiplayerGames_Server.Application.UseCases.XOGame.RequestDTOs;
 using MultiplayerGames_Server.Application.UseCases.XOGame.ResponseDTOs;
 using MultiplayerGames_Server.Domain.Abstractions;
+using MultiplayerGames_Server.Domain.Abstractions.Services;
 using MultiplayerGames_Server.Domain.Common.Codes;
 using UserAggregate = MultiplayerGames_Server.Domain.Aggregates.User.User;
 using XOGameAggregate = MultiplayerGames_Server.Domain.Aggregates.XOGame.XOGame;
@@ -41,7 +42,7 @@ public class XOGameService
     {
         string? userId = _currentUserService.GetUserId();
         if (userId == null)
-            throw new BadRequestException(AuthCodes.Error.Unauthenticated);
+            throw new BadRequestApplicationException(AuthCodes.Error.Unauthenticated);
 
         var xoGame = XOGameAggregate.Create(userId, _idGenerator);
         await _unitOfWork.XOGames.AddAsync(xoGame, cancellationToken);
@@ -65,11 +66,11 @@ public class XOGameService
     {
         string? userId = _currentUserService.GetUserId();
         if (userId == null)
-            throw new BadRequestException(AuthCodes.Error.Unauthenticated);
+            throw new BadRequestApplicationException(AuthCodes.Error.Unauthenticated);
 
         var game = await _unitOfWork.XOGames.GetByIdAsync(gameId, cancellationToken);
         if (game == null)
-            throw new NotFoundEntityException(XOGameCodes.Error.NotFound);
+            throw new NotFoundApplicationException(XOGameCodes.Error.NotFound);
 
         game.Join(userId);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
@@ -91,11 +92,11 @@ public class XOGameService
     {
         string? userId = _currentUserService.GetUserId();
         if (userId == null)
-            throw new BadRequestException(AuthCodes.Error.Unauthenticated);
+            throw new BadRequestApplicationException(AuthCodes.Error.Unauthenticated);
 
         var game = await _unitOfWork.XOGames.GetByIdAsync(gameId, cancellationToken);
         if (game == null)
-            throw new NotFoundEntityException(XOGameCodes.Error.NotFound);
+            throw new NotFoundApplicationException(XOGameCodes.Error.NotFound);
 
         game.Leave(userId);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
@@ -117,7 +118,7 @@ public class XOGameService
     {
         var game = await _unitOfWork.XOGames.GetByIdAsync(gameId, cancellationToken);
         if (game == null)
-            throw new NotFoundEntityException(XOGameCodes.Error.NotFound);
+            throw new NotFoundApplicationException(XOGameCodes.Error.NotFound);
 
         UserAggregate? player1 =
             game.Player1Id == null
@@ -176,11 +177,11 @@ public class XOGameService
     {
         string? userId = _currentUserService.GetUserId();
         if (userId == null)
-            throw new BadRequestException(AuthCodes.Error.Unauthenticated);
+            throw new BadRequestApplicationException(AuthCodes.Error.Unauthenticated);
 
         var game = await _unitOfWork.XOGames.GetByIdAsync(gameId, cancellationToken);
         if (game == null)
-            throw new NotFoundEntityException(XOGameCodes.Error.NotFound);
+            throw new NotFoundApplicationException(XOGameCodes.Error.NotFound);
 
         game.MakeMove(userId, row, col);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

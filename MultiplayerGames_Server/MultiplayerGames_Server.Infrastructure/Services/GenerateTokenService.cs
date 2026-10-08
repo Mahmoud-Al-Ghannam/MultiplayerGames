@@ -1,6 +1,7 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -45,5 +46,13 @@ internal class GenerateTokenService : IGenerateTokenService
         var token = tokenHandler.CreateToken(tokenDescriptor);
         string accessToken = tokenHandler.WriteToken(token);
         return Task.FromResult(accessToken);
+    }
+
+    public Task<string> GenerateRefreshTokenAsync(CancellationToken cancellationToken)
+    {
+        using var rng = RandomNumberGenerator.Create();
+        var bytes = new byte[64];
+        rng.GetBytes(bytes);
+        return Task.FromResult(Convert.ToBase64String(bytes));
     }
 }

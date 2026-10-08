@@ -4,12 +4,12 @@ using System.Text;
 
 namespace MultiplayerGames_Server.Application.Common.Exceptions
 {
-    public class BadRequestException : ApplicationException
+    public class NotFoundApplicationException : ApplicationException
     {
-        public BadRequestException(string message)
+        public NotFoundApplicationException(string message)
             : base(message) { }
 
-        public BadRequestException(string message, Exception innerException)
+        public NotFoundApplicationException(string message, Exception innerException)
             : base(message, innerException) { }
     }
 }

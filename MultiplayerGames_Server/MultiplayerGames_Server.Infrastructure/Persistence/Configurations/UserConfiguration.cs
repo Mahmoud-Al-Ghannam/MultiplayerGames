@@ -11,5 +11,13 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     )
     {
         builder.HasKey(u => u.Id);
+
+        builder.OwnsOne(
+            u => u.Email,
+            email =>
+            {
+                email.Property(e => e.Value).HasColumnName("Email").IsRequired();
+            }
+        );
     }
 }

@@ -14,16 +14,25 @@ internal class FileStorageService : IFileStorageService
         _webHostEnvironment = webHostEnvironment;
     }
 
-    public async Task<string> SaveFileAsync(IAppFormFile file, string folderPath)
+    public async Task<string> SaveFileAsync(
+        IAppFormFile file,
+        string folderPath,
+        CancellationToken cancellationToken = default
+    )
     {
         using var ms = new MemoryStream();
         await file.OpenReadStream().CopyToAsync(ms);
         byte[] bytes = ms.ToArray();
 
-        return await SaveFileAsync(bytes, folderPath, file.FileName);
+        return await SaveFileAsync(bytes, folderPath, file.FileName, cancellationToken);
     }
 
-    public async Task<string> SaveFileAsync(byte[] fileBytes, string folderPath, string filename)
+    public async Task<string> SaveFileAsync(
+        byte[] fileBytes,
+        string folderPath,
+        string filename,
+        CancellationToken cancellationToken = default
+    )
     {
         // Ensure directory exists
         if (!Directory.Exists(folderPath))
@@ -38,19 +47,24 @@ internal class FileStorageService : IFileStorageService
         return fullPath;
     }
 
-    public async Task<string> SaveFileToRootAsync(IAppFormFile file, string subfolder)
+    public async Task<string> SaveFileToRootAsync(
+        IAppFormFile file,
+        string subfolder,
+        CancellationToken cancellationToken = default
+    )
     {
         using var ms = new MemoryStream();
         await file.OpenReadStream().CopyToAsync(ms);
         byte[] bytes = ms.ToArray();
 
-        return await SaveFileToRootAsync(bytes, subfolder, file.FileName);
+        return await SaveFileToRootAsync(bytes, subfolder, file.FileName, cancellationToken);
     }
 
     public async Task<string> SaveFileToRootAsync(
         byte[] fileBytes,
         string subfolder,
-        string filename
+        string filename,
+        CancellationToken cancellationToken = default
     )
     {
         string wwwrootPath =
@@ -81,7 +95,10 @@ internal class FileStorageService : IFileStorageService
         return Path.Combine(subfolder, uniqueFilename).Replace("\\", "/");
     }
 
-    public async Task DeleteFileFromRootAsync(string relativePath)
+    public async Task DeleteFileFromRootAsync(
+        string relativePath,
+        CancellationToken cancellationToken = default
+    )
     {
         string wwwrootPath =
             _webHostEnvironment.WebRootPath

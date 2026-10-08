@@ -23,7 +23,6 @@ public static class ApplicationServiceCollectionExtensions
         // Register Pipeline Behavior
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionHandlingBehavior<,>));
 
-        services.AddScoped<AuthService>();
         services.AddScoped<UserService>();
         services.AddScoped<XOGameService>();
         services.AddScoped<TestService>();
