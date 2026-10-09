@@ -21,7 +21,15 @@ public class UserService
     )
     {
         var users = await _unitOfWork.Users.GetAllAsync(cancellationToken);
-        var userDTOs = users.Select(u => new UserInfoDto { Id = u.Id, Username = u.Username });
+        var userDTOs = users
+            .Select(u => new UserInfoDto
+            {
+                Id = u.Id,
+                Username = u.Username,
+                Email = u.Email.Value,
+                ProfileImageUrl = u.ProfileImagePath?.ToString(),
+            })
+            .ToList();
 
         return new BaseResponse<IEnumerable<UserInfoDto>>
         {
@@ -40,7 +48,13 @@ public class UserService
 
         if (user == null)
             throw new NotFoundApplicationException(UserCodes.Error.NotFound);
-        var userDto = new UserInfoDto { Id = user.Id, Username = user.Username };
+        var userDto = new UserInfoDto
+        {
+            Id = user.Id,
+            Username = user.Username,
+            Email = user.Email.Value,
+            ProfileImageUrl = user.ProfileImagePath?.ToString(),
+        };
 
         return new BaseResponse<UserInfoDto?>
         {
@@ -50,16 +64,22 @@ public class UserService
         };
     }
 
-    public async Task<BaseResponse<UserInfoDto?>> GetUserByUsernameAsync(
-        string username,
+    public async Task<BaseResponse<UserInfoDto?>> GetUserByEmailAsync(
+        string email,
         CancellationToken cancellationToken
     )
     {
-        var user = await _unitOfWork.Users.GetByUsernameAsync(username, cancellationToken);
+        var user = await _unitOfWork.Users.GetByEmailAsync(email, cancellationToken);
 
         if (user == null)
             throw new NotFoundApplicationException(UserCodes.Error.NotFound);
-        var userDto = new UserInfoDto { Id = user.Id, Username = user.Username };
+        var userDto = new UserInfoDto
+        {
+            Id = user.Id,
+            Username = user.Username,
+            Email = user.Email.Value,
+            ProfileImageUrl = user.ProfileImagePath?.ToString(),
+        };
 
         return new BaseResponse<UserInfoDto?>
         {

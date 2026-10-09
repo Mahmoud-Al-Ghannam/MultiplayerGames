@@ -27,6 +27,8 @@
     <Folder Include="DependencyInjection\" />
     <Folder Include="Hangfire\" />
     <Folder Include="Middlewares\" />
+    <Folder Include="Requests\" />
+    <Folder Include="Requests\Auth\" />
   </ItemGroup>
 
   <ItemGroup>

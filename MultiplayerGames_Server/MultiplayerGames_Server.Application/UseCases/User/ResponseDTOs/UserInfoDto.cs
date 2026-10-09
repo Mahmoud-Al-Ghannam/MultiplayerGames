@@ -1,3 +1,5 @@
+using MultiplayerGames_Server.Application.Common.Attributes;
+
 namespace MultiplayerGames_Server.Application.UseCases.User.ResponseDTOs;
 
 /// <summary>
@@ -16,4 +18,17 @@ public record class UserInfoDto
     /// </summary>
     /// <example>johndoe</example>
     public string Username { get; init; } = string.Empty;
+
+    /// <summary>
+    /// Gets the email of the user.
+    /// </summary>
+    /// <example>johndoe@example.com</example>
+    public string Email { get; init; } = string.Empty;
+
+    /// <summary>
+    /// Gets the profile image URL of the user.
+    /// </summary>
+    /// <example>https://example.com/profile.jpg</example>
+    [FileAttribute]
+    public string? ProfileImageUrl { get; init; }
 }

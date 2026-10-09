@@ -1,10 +1,13 @@
 using System;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using MultiplayerGames_Server.Infrastructure.Options;
+using MultiplayerGames_Server.WebApi.Common;
 using MultiplayerGames_Server.WebApi.Hangfire;
+using MultiplayerGames_Server.WebApi.Helpers;
 
 namespace MultiplayerGames_Server.WebApi.DependencyInjection;
 
@@ -15,11 +18,28 @@ public static class WebapiServiceCollectionExtensions
         IConfiguration configuration
     )
     {
+        services.AddScoped<FileUrlHelper>();
+        services.AddScoped<ObjectUrlWrapper>();
+
         services.AddScoped<MyHangfireAuthorizationFilter>();
 
         // Add services to the container.
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-        services.AddControllers();
+        services.AddControllers(options =>
+        {
+            options.Filters.Add(
+                new ProducesResponseTypeAttribute(
+                    typeof(FailedProductionResponse),
+                    StatusCodes.Status400BadRequest
+                )
+            );
+            options.Filters.Add(
+                new ProducesResponseTypeAttribute(
+                    typeof(FailedProductionResponse),
+                    StatusCodes.Status500InternalServerError
+                )
+            );
+        });
         services.AddOpenApi(
             "v1",
             options =>

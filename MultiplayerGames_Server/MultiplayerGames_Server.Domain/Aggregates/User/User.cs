@@ -14,7 +14,7 @@ public class User : AggregateRoot
 {
     public string Username { get; private set; } = string.Empty;
     public string HashedPassword { get; private set; } = string.Empty;
-    public Email Email { get; private set; } = Email.Empty;
+    public Email Email { get; private set; } = null!;
     public bool EmailConfirmed { get; private set; } = false;
     public string? ProfileImagePath { get; private set; }
 
@@ -55,7 +55,7 @@ public class User : AggregateRoot
 
     public User SetEmail(Email email)
     {
-        if (email == null || email == Email.Empty)
+        if (email == null)
             throw new DomainException(UserCodes.Error.Email.Required);
 
         Email = email;

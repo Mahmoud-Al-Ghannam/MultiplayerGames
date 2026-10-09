@@ -7,8 +7,9 @@ namespace MultiplayerGames_Server.Domain.ValueObjects;
 
 public record class Email : ValueObject
 {
-    public static Email Empty { get; } = new Email(string.Empty);
     public string Value { get; private init; }
+
+    private Email() { }
 
     public Email(string value)
     {
